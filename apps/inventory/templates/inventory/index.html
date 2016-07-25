@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>Products App</title>
+	</head>
+	<body>
+		<h1>Trader's Store</h1>
+		<h3>Product Listing:</h3>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>Brand</th>
+					<th>Product Name</th>
+					<th>Price($)</th>
+					<th>Date Added</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for each in products %}
+					<tr>
+						<td>{{ each.brand }}</td>
+						<td>{{ each.name }}</td>
+						<td>{{ each.price|floatformat:2 }}</td>
+						<td>{{ each.date_added|date:"F d, Y"}}</td>
+						<td>
+							<form action="{% url 'delete' id=each.id %}" method="post">
+                    			{% csrf_token %}
+                    			<input type="submit" value ="Delete">
+                    		</form>
+                    		<a href="/edit/{{ each.id }}">Edit</a>
+                    	</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+ 
+
+		<h3>Add a Product:</h3>
+			<form action="/add_product" method="POST">
+				{% csrf_token %}
+			
+				<label for="brand_name">Brand:</label>
+				<select name="brand_name">
+					{% for each in brands %}
+						<option value="{{ each.brand_name }}">{{ each.brand_name }}</option>
+					{% endfor %}
+				</select><br>
+
+				<label for = "name">Product Name:</label>
+				<input type="text" name="name"/><br>
+
+				<label for = "price">Price ($):</label>
+				<input type="text" name="price"/><br>
+
+				<label for ="description">Description:</label>
+				<input type="text" name="description"/></br>
+
+				<input type="submit" value="Add"/>
+			</form>
+
+	</body>
+</html>

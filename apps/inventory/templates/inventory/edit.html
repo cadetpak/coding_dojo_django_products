@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>Products App</title>
+	</head>
+	<body>
+		<h1>Edit {{ product.name }} Details</h1>
+			<a href="/products">Back to Products</a>
+			<form action="{% url 'update' id=product.id %}" method="POST">
+				{% csrf_token %}
+				<!-- Need csrf_token for security! -->
+				<label for="brand_name">Brand:</label>
+				<select name="brand_name">
+					{% for each in brands %}
+						<!-- Populates each option field with available brand names. -->
+						<!-- If the brand populated matches the selected product's brand, default select this option on page. -->
+						<option value="{{ each.brand_name }}" {% if each == product.brand %}selected="selected"{% endif %}>{{ each.brand_name }}</option>
+					{% endfor %}
+				</select><br>
+
+				<label for = "name">Product Name:</label>
+				<input type="text" name="name" value="{{ product.name }}"/><br>
+
+				<label for = "price">Price ($):</label>
+				<input type="text" name="price" value="{{ product.price }}"/><br>
+
+				<label for ="description">Description:</label>
+				<input type="text" name="description" value="{{ product.description }}"/></br>
+
+				<input type="submit" value="Update"/>
+			</form>		
+	</body>
+</html>
